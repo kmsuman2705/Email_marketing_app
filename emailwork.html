@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Marketing Tool</title>
+    <style>
+        /* Your CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            text-align: center;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+        input[type="file"],
+        textarea {
+            width: calc(100% - 10px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .result {
+            padding: 20px;
+        }
+        .result h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .result p {
+            margin-top: 0;
+        }
+        .result table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .result th, .result td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .result th {
+            background-color: #f2f2f2;
+        }
+        .smtp-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .smtp-option {
+            width: calc(33.33% - 10px);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Email Marketing Tool</h1>
+        </div>
+        <div class="form-container">
+            <form id="emailForm">
+                <label>Select SMTP Configuration:</label>
+                <div class="smtp-options">
+                    <div class="smtp-option">
+                        <label>
+                            <input type="radio" name="smtpOption" value="icloud" checked>
+                            iCloud SMTP
+                        </label>
+                        <input type="file" id="icloudSmtpFile" accept=".json">
+                    </div>
+                    <div class="smtp-option">
+                        <label>
+                            <input type="radio" name="smtpOption" value="gmail">
+                            Gmail SMTP
+                        </label>
+                        <input type="file" id="gmailSmtpFile" accept=".json">
+                    </div>
+                    <div class="smtp-option">
+                        <label>
+                            <input type="radio" name="smtpOption" value="office365">
+                            Office 365 SMTP
+                        </label>
+                        <input type="file" id="office365SmtpFile" accept=".json">
+                    </div>
+                </div>
+                <label>Upload Excel File:</label>
+                <input type="file" id="excelFile" accept=".xls,.xlsx">
+                <button type="submit">Send Email</button>
+            </form>
+        </div>
+        <div class="result">
+            <h2>Emails Sent</h2>
+            <p>Last Email Sent To: <span id="lastRecipient"></span></p>
+            <p>Using SMTP: <span id="lastSMTP"></span></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recipient</th>
+                        <th>SMTP Used</th>
+                    </tr>
+                </thead>
+                <tbody id="emailList">
+                    <!-- This section will be populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        // JavaScript code for toggling file inputs based on selected SMTP configuration
+        const smtpOptions = document.querySelectorAll('input[name="smtpOption"]');
+        const smtpFileInputs = document.querySelectorAll('input[type="file"]');
+        
+        // Function to show the file input corresponding to the selected SMTP configuration
+        function toggleFileInput() {
+            const selectedSMTP = document.querySelector('input[name="smtpOption"]:checked').value;
+            smtpFileInputs.forEach(input => {
+                input.style.display = 'none'; // Hide all file inputs by default
+            });
+            document.getElementById(`${selectedSMTP}SmtpFile`).style.display = 'block'; // Show file input for selected SMTP configuration
+        }
+        
+        // Event listener for radio button change
+        smtpOptions.forEach(option => {
+            option.addEventListener('change', toggleFileInput);
+        });
+        
+        // Initial call to toggleFileInput to show the correct file input on page load
+        toggleFileInput();
+    </script>
+</body>
+</html>
